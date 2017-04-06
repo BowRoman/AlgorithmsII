@@ -18,7 +18,6 @@ namespace ExpressionTree
 	protected:
 		Node(NodeType type);
 	public:
-		Node();
 		~Node();
 
 		NodeType GetNodeType() { return eType_ }
@@ -26,18 +25,21 @@ namespace ExpressionTree
 		virtual T Compute() = 0;
 	};
 
-	//-----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
 
 	template <typename T>
-	class Operand : public base
+	class Operand : public Node<T>
 	{
 	private:
 		T data_;
 	public:
+		Operand();
+		~Operand();
+
 		T Compute() override;
 	};
 
-	//-----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
 
 	enum class OperatorType
 	{
@@ -56,10 +58,13 @@ namespace ExpressionTree
 	private:
 		OperatorType eOpType_;
 	public:
-		Operator();
-
 		Node<T>* left_;
 		Node<T>* right_;
+
+		Operator();
+		~Operator();
+
+		OperatorType GetOpType() { return eOpType_; }
 
 		T Compute() override;
 	};
