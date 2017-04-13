@@ -20,6 +20,9 @@ namespace ExpressionTree
 	public:
 		~Node();
 
+		Node<T>* left_;
+		Node<T>* right_;
+
 		NodeType GetNodeType() { return eType_ }
 
 		virtual T Compute() = 0;
@@ -58,9 +61,6 @@ namespace ExpressionTree
 	private:
 		OperatorType eOpType_;
 	public:
-		Node<T>* left_;
-		Node<T>* right_;
-
 		Operator(OperatorType type);
 		~Operator();
 

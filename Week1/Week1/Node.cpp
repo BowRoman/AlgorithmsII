@@ -12,6 +12,10 @@ namespace ExpressionTree
 	template <typename T>
 	Node<T>::~Node()
 	{
+		delete right_;
+		delete left_;
+		right_ = nullptr;
+		left_ = nullptr;
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -50,6 +54,7 @@ namespace ExpressionTree
 	{
 	}
 
+	// Performs the node's operation on the child nodes.
 	template <typename T>
 	T Operator<T>::Compute()
 	{
