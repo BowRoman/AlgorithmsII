@@ -17,7 +17,9 @@ namespace ExpressionTree
 	//-----------------------------------------------------------------------------------
 
 	template <typename T>
-	Operand<T>::Operand() : Node<T>::Node(NodeType::operand_)
+	Operand<T>::Operand(T data)
+		: Node<T>::Node(NodeType::operand_)
+		, data_(data)
 	{
 	}
 
@@ -35,7 +37,11 @@ namespace ExpressionTree
 	//-----------------------------------------------------------------------------------
 
 	template <typename T>
-	Operator<T>::Operator() : Node<T>::Node(NodeType::operator_)
+	Operator<T>::Operator(OperatorType type)
+		: Node<T>::Node(NodeType::operator_)
+		, eOpType_(type)
+		, left_(nullptr)
+		, right_(nullptr)
 	{
 	}
 
@@ -47,7 +53,11 @@ namespace ExpressionTree
 	template <typename T>
 	T Operator<T>::Compute()
 	{
-		T leftResult = left_->Compute();
+		T leftResult();
+		if (left_)
+		{
+			leftResult = left_->Compute();
+		}
 		T rightResult = right_->Compute();
 		T result = T();
 

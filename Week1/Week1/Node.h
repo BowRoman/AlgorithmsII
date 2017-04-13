@@ -33,7 +33,7 @@ namespace ExpressionTree
 	private:
 		T data_;
 	public:
-		Operand();
+		Operand(T data);
 		~Operand();
 
 		T Compute() override;
@@ -61,7 +61,7 @@ namespace ExpressionTree
 		Node<T>* left_;
 		Node<T>* right_;
 
-		Operator();
+		Operator(OperatorType type);
 		~Operator();
 
 		OperatorType GetOpType() { return eOpType_; }
