@@ -1,56 +1,8 @@
 ﻿  Source.cpp
-d:\jroman\algorithmsii\week1\week1\expressiontree.h(131): error C2819: type 'ExpressionTree::Operator<T>' does not have an overloaded member 'operator ->'
-          with
-          [
-              T=int
-          ]
-  d:\jroman\algorithmsii\week1\week1\expressiontree.h(130): note: see declaration of 'ExpressionTree::Operator<T>'
-          with
-          [
-              T=int
-          ]
-  d:\jroman\algorithmsii\week1\week1\expressiontree.h(131): note: did you intend to use '.' instead?
-  d:\jroman\algorithmsii\week1\week1\expressiontree.h(115): note: while compiling class template member function 'void ExpressionTree::ExpressionTree<int>::CreateNode(char)'
-  d:\jroman\algorithmsii\week1\week1\expressiontree.h(79): note: see reference to function template instantiation 'void ExpressionTree::ExpressionTree<int>::CreateNode(char)' being compiled
-  d:\jroman\algorithmsii\week1\week1\expressiontree.h(33): note: while compiling class template member function 'ExpressionTree::ExpressionTree<int>::ExpressionTree(void)'
-  d:\jroman\algorithmsii\week1\week1\source.cpp(5): note: see reference to function template instantiation 'ExpressionTree::ExpressionTree<int>::ExpressionTree(void)' being compiled
-  d:\jroman\algorithmsii\week1\week1\source.cpp(5): note: see reference to class template instantiation 'ExpressionTree::ExpressionTree<int>' being compiled
-d:\jroman\algorithmsii\week1\week1\expressiontree.h(131): error C2232: '->ExpressionTree::Node<T>::left_': left operand has 'class' type, use '.'
-          with
-          [
-              T=int
-          ]
-d:\jroman\algorithmsii\week1\week1\expressiontree.h(132): error C2440: '=': cannot convert from 'ExpressionTree::Operator<T>' to 'ExpressionTree::Node<T> *'
-          with
-          [
-              T=int
-          ]
-  d:\jroman\algorithmsii\week1\week1\expressiontree.h(132): note: No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
-d:\jroman\algorithmsii\week1\week1\expressiontree.h(93): error C2514: 'ExpressionTree::Operand': class has no constructors
-  d:\jroman\algorithmsii\week1\week1\node.h(34): note: see declaration of 'ExpressionTree::Operand'
-  d:\jroman\algorithmsii\week1\week1\expressiontree.h(90): note: while compiling class template member function 'void ExpressionTree::ExpressionTree<int>::CreateNode(T)'
-          with
-          [
-              T=int
-          ]
-  d:\jroman\algorithmsii\week1\week1\expressiontree.h(75): note: see reference to function template instantiation 'void ExpressionTree::ExpressionTree<int>::CreateNode(T)' being compiled
-          with
-          [
-              T=int
-          ]
-d:\jroman\algorithmsii\week1\week1\expressiontree.h(99): error C2514: 'ExpressionTree::Operand': class has no constructors
-  d:\jroman\algorithmsii\week1\week1\node.h(34): note: see declaration of 'ExpressionTree::Operand'
-d:\jroman\algorithmsii\week1\week1\expressiontree.h(103): error C2514: 'ExpressionTree::Operand': class has no constructors
-  d:\jroman\algorithmsii\week1\week1\node.h(34): note: see declaration of 'ExpressionTree::Operand'
-d:\jroman\algorithmsii\week1\week1\expressiontree.h(138): error C2440: 'initializing': cannot convert from 'char' to 'char *'
-  d:\jroman\algorithmsii\week1\week1\expressiontree.h(138): note: Conversion from integral type to pointer type requires reinterpret_cast, C-style cast or function-style cast
-  d:\jroman\algorithmsii\week1\week1\expressiontree.h(137): note: while compiling class template member function 'int ExpressionTree::ExpressionTree<int>::MakeNumber(char *,unsigned int &)'
-  d:\jroman\algorithmsii\week1\week1\expressiontree.h(74): note: see reference to function template instantiation 'int ExpressionTree::ExpressionTree<int>::MakeNumber(char *,unsigned int &)' being compiled
-d:\jroman\algorithmsii\week1\week1\expressiontree.h(173): error C2065: 'expLength': undeclared identifier
-  d:\jroman\algorithmsii\week1\week1\expressiontree.h(169): note: while compiling class template member function 'bool ExpressionTree::ExpressionTree<int>::IsValidExpression(char *)'
-  d:\jroman\algorithmsii\week1\week1\expressiontree.h(52): note: see reference to function template instantiation 'bool ExpressionTree::ExpressionTree<int>::IsValidExpression(char *)' being compiled
-d:\jroman\algorithmsii\week1\week1\expressiontree.h(175): error C2065: 'expresion': undeclared identifier
-d:\jroman\algorithmsii\week1\week1\expressiontree.h(179): error C2065: 'expresion': undeclared identifier
   Generating Code...
+d:\jroman\algorithmsii\week1\week1\expressiontree.h(140): warning C4700: uninitialized local variable 'number' used
   Skipping... (no relevant changes detected)
   ExpressionTree.cpp
+Source.obj : error LNK2019: unresolved external symbol "public: __thiscall ExpressionTree::Operand<int>::Operand<int>(int)" (??0?$Operand@H@ExpressionTree@@QAE@H@Z) referenced in function "private: void __thiscall ExpressionTree::ExpressionTree<int>::CreateTNode(int)" (?CreateTNode@?$ExpressionTree@H@ExpressionTree@@AAEXH@Z)
+Source.obj : error LNK2019: unresolved external symbol "public: __thiscall ExpressionTree::Operator<int>::Operator<int>(enum ExpressionTree::OperatorType)" (??0?$Operator@H@ExpressionTree@@QAE@W4OperatorType@1@@Z) referenced in function "private: void __thiscall ExpressionTree::ExpressionTree<int>::CreateDNode(char)" (?CreateDNode@?$ExpressionTree@H@ExpressionTree@@AAEXD@Z)
+D:\JRoman\AlgorithmsII\Week1\Debug\Week1.exe : fatal error LNK1120: 2 unresolved externals

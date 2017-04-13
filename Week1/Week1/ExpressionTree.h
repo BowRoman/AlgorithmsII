@@ -19,13 +19,13 @@ namespace ExpressionTree
 	private:
 		Node<T>* root_;
 
-		void CreateNode(T data);
-		void CreateNode(char data);
+		void CreateTNode(T data);
+		void CreateDNode(char data);
 
 		T MakeNumber(char *expression, uint& index);
 
 		bool IsOperator(char c);
-		bool IsValidExpression(char *expression);
+		bool IsValidExpression(char *expression, uint expLength);
 	};
 
 	template<typename T>
@@ -49,7 +49,7 @@ namespace ExpressionTree
 		std::vector<uint> parLoc;
 		parLoc.reserve(maxNumPar);
 
-		if (!IsValidExpression(expression))
+		if (!IsValidExpression(expression, expLen))
 		{
 			return;
 		}
@@ -72,11 +72,11 @@ namespace ExpressionTree
 					if (isdigit(expression[j]))
 					{
 						T digit = MakeNumber(expression, j);
-						CreateNode(digit);
+						CreateTNode(digit);
 					}
 					if (IsOperator(expression[j]))
 					{
-						CreateNode(expression[j]);
+						CreateDNode(expression[j]);
 					}
 					++j;
 				}
@@ -86,21 +86,22 @@ namespace ExpressionTree
 
 	// Creates a data node.
 	template<typename T>
-	void ExpressionTree<T>::CreateNode(T data)
+	void ExpressionTree<T>::CreateTNode(T data)
 	{
+		Operand<T>* newNode = new Operand<T>(data);
 		if (!root_)
 		{
-			root_ = new Operand(data);
+			root_ = newNode;
 		}
 		else
 		{
 			if (!root_->left_)
 			{
-				root_->left_ = new Operand(data);
+				root_->left_ = newNode;
 			}
 			else if (!root_->right_)
 			{
-				root_->right_ = new Operand(data);
+				root_->right_ = newNode;
 			}
 			else
 			{
@@ -111,7 +112,7 @@ namespace ExpressionTree
 
 	// Creates an operator node.
 	template<typename T>
-	void ExpressionTree<T>::CreateNode(char data)
+	void ExpressionTree<T>::CreateDNode(char data)
 	{
 		OperatorType opType;
 		switch (data)
@@ -127,15 +128,16 @@ namespace ExpressionTree
 		case '%': opType = OperatorType::modulus_;
 			break;
 		}
-		Operator<T> newRoot(opType);
+		Operator<T>* newRoot = new Operator<T>(opType);
 		newRoot->left_ = root_;
 		root_ = newRoot;
 	}
 
 	template<typename T>
-	T ExpressionTree<T>::MakeNumber(char *expression, unsigned int& index)
+	T ExpressionTree<T>::MakeNumber(char *expression, uint& index)
 	{
-		char *number = expression[index];
+		char *number;
+		number[0] = expression[index];
 		uint numSize = 1;
 		while (isdigit(expression[index + 1]));
 		{
@@ -165,18 +167,18 @@ namespace ExpressionTree
 
 	// Returns true if expression contains no unmatched parentheses.
 	template<typename T>
-	bool ExpressionTree<T>::IsValidExpression(char *expression)
+	bool ExpressionTree<T>::IsValidExpression(char *expression, uint expLength)
 	{
 		uint numOPar = 0;
 		uint numCPar = 0;
 
 		for (uint i = 0; i < expLength; ++i)
 		{
-			if (expresion[i] == '(')
+			if (expression[i] == '(')
 			{
 				++numOPar;
 			}
-			if (expresion[i] == ')')
+			if (expression[i] == ')')
 			{
 				numCPar++;
 			}
