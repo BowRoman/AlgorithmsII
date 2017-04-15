@@ -1,6 +1,9 @@
 #pragma once
 #include <iostream>
 #include <memory>
+#include <vector>
+#include <ostream>
+#include <fstream>
 
 namespace BST
 {
@@ -44,14 +47,20 @@ namespace BST
 		bool Search(T val);
 		bool Remove(T val);
 
-		bool Print(Order order = Order::In);
+		T FindMin();
+		T FindMax();
+		std::vector<T> FindRange(T min, T max);
+
+		bool Print(Order order = Order::In, std::ostream& os = std::cout);
 
 	private:
 		spNode root_;
 
-		void PrintInOrder(spNode currNode = nullptr);
-		void PrintPreOrder(spNode currNode = nullptr);
-		void PrintPostOrder(spNode currNode = nullptr);
+		void FindRangeHelper(T min, T max, std::vector<T>& inRange, const spNode& curr);
+
+		void PrintInOrder(std::ostream& os, const spNode currNode = nullptr);
+		void PrintPreOrder(std::ostream& os, const spNode currNode = nullptr);
+		void PrintPostOrder(std::ostream& os, const spNode currNode = nullptr);
 	};
 
 	template<typename T>
@@ -145,7 +154,7 @@ namespace BST
 					if (!parentNode)
 					{
 						currNode.reset();
-						root_ == nullptr;
+						root_.reset();
 						return true;
 					}
 					else
@@ -153,13 +162,13 @@ namespace BST
 						if (parentNode->left_ == currNode)
 						{
 							currNode.reset();
-							parentNode->left_ = nullptr;
+							parentNode->left_.reset();
 							return true;
 						}
 						else if (parentNode->right_ == currNode)
 						{
 							currNode.reset();
-							parentNode->right_ = nullptr;
+							parentNode->right_.reset();
 							return true;
 						}
 					}
@@ -229,21 +238,19 @@ namespace BST
 				{
 					// set closestnode to the node-to-deletes right child
 					spNode closestNode = currNode->right_;
-					// if the right child has no left child, link its right child to the parent's right
-					if (!closestNode->left_)
+					// if the right child has no children replace the deleted nodes data with the right child's
+					if (!closestNode->left_ && !closestNode->right_)
 					{
-						if (closestNode->right_)
-						{
-							if (!parentNode)
-							{
-								root_ = closestNode->right_;
-							}
-							else
-							{
-								parentNode->right_ = closestNode->right_;
-							}
-						}
 						currNode->data_ = closestNode->data_;
+						currNode->right_.reset();
+						closestNode.reset();
+					}
+					// if the right child has no left child, link its right child to the parent's child
+					else if (!closestNode->left_)
+					{
+						currNode->data_ = closestNode->data_;
+						currNode->right_ = closestNode->right_;
+						closestNode->right_.reset();
 						closestNode.reset();
 						return true;
 					}
@@ -257,6 +264,11 @@ namespace BST
 						if (closestNode->right_)
 						{
 							parentNode->left_ = closestNode->right_;
+							closestNode->right_.reset();
+						}
+						else
+						{
+							parentNode->left_.reset();
 						}
 						currNode->data_ = closestNode->data_;
 						closestNode.reset();
@@ -269,15 +281,53 @@ namespace BST
 	}
 
 	template<typename T>
-	inline bool BSTree<T>::Print(Order order)
+	inline T BSTree<T>::FindMin()
+	{
+		if (!root_)
+		{
+			return T();
+		}
+		spNode smallest = root_;
+		while (smallest->left_)
+		{
+			smallest = smallest->left_;
+		}
+		return smallest->data_;
+	}
+
+	template<typename T>
+	inline T BSTree<T>::FindMax()
+	{
+		if (!root_)
+		{
+			return T();
+		}
+		spNode largest = root_;
+		while (largest->right_)
+		{
+			largest = largest->right_;
+		}
+		return largest->data_;
+	}
+
+	template<typename T>
+	inline std::vector<T> BSTree<T>::FindRange(T min, T max)
+	{
+		std::vector<T> inRange;
+		FindRangeHelper(min, max, inRange, root_);
+		return inRange;
+	}
+
+	template<typename T>
+	inline bool BSTree<T>::Print(Order order, std::ostream& os = std::cout)
 	{
 		switch (order)
 		{
-		case Order::In: PrintInOrder(root_);
+		case Order::In: PrintInOrder(os, root_);
 			break;
-		case Order::Pre: PrintPreOrder(root_);
+		case Order::Pre: PrintPreOrder(os, root_);
 			break;
-		case Order::Post: PrintPostOrder(root_);
+		case Order::Post: PrintPostOrder(os, root_);
 			break;
 		default: return false;
 			break;
@@ -286,39 +336,61 @@ namespace BST
 	}
 
 	template<typename T>
-	inline void BSTree<T>::PrintInOrder(spNode currNode)
+	void BSTree<T>::FindRangeHelper(T min, T max, std::vector<T>& inRange, const spNode & curr)
 	{
-		if (!currNode)
+		if (!curr)
 		{
 			return;
 		}
-		PrintInOrder(currNode->left_);
-		std::cout << currNode->data_ << " ";
-		PrintInOrder(currNode->right_);
+		if (curr->data_ >= min)
+		{
+			FindRangeHelper(min, max, inRange, curr->left_);
+			if (curr->data_ <= max)
+			{
+				inRange.push_back(curr->data_);
+				FindRangeHelper(min, max, inRange, curr->right_);
+			}
+		}
+		else if (curr->data_ <= max)
+		{
+			FindRangeHelper(min, max, inRange, curr->right_);
+		}
 	}
 
 	template<typename T>
-	inline void BSTree<T>::PrintPreOrder(spNode currNode)
+	inline void BSTree<T>::PrintInOrder(std::ostream& os, const spNode currNode)
 	{
 		if (!currNode)
 		{
 			return;
 		}
-		std::cout << currNode->data_ << " ";
-		PrintPreOrder(currNode->left_);
-		PrintPreOrder(currNode->right_);
+		PrintInOrder(os, currNode->left_);
+		os << currNode->data_ << " ";
+		PrintInOrder(os, currNode->right_);
 	}
 
 	template<typename T>
-	inline void BSTree<T>::PrintPostOrder(spNode currNode)
+	inline void BSTree<T>::PrintPreOrder(std::ostream& os, const spNode currNode)
 	{
 		if (!currNode)
 		{
 			return;
 		}
-		PrintPostOrder(currNode->left_);
-		PrintPostOrder(currNode->right_);
-		std::cout << currNode->data_ << " ";
+		os << currNode->data_ << " ";
+		PrintPreOrder(os, currNode->left_);
+		PrintPreOrder(os, currNode->right_);
+	}
+
+	template<typename T>
+	inline void BSTree<T>::PrintPostOrder(std::ostream& os, const spNode currNode)
+	{
+		if (!currNode)
+		{
+			return;
+		}
+		PrintPostOrder(os, currNode->left_);
+		PrintPostOrder(os, currNode->right_);
+		os << currNode->data_ << " ";
 	}
 
 }

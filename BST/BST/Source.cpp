@@ -2,6 +2,9 @@
 
 void main()
 {
+	std::ofstream outputFile;
+	outputFile.open("Output.txt");
+
 	BST::BSTree<int> myTree;
 
 	myTree.Insert(23);
@@ -13,33 +16,47 @@ void main()
 	myTree.Insert(11);
 	myTree.Insert(41);
 	myTree.Insert(30);
+	myTree.Insert(6);
 
-	myTree.Print(BST::Order::In);
+	myTree.Print(BST::Order::In, outputFile);
 
-	int searchFor = 0;
+	outputFile << "\nMin is: " << myTree.FindMin();
+	outputFile << "\nMax is: " << myTree.FindMax();
 
-	//std::cout << "\nSearch tree for: ";
-	//std::cin >> searchFor;
+	int searchFor = 41;
+	int remove = 34;
 
-	//if (myTree.Search(searchFor))
-	//{
-	//	std::cout << "[" << searchFor << " found]";
-	//}
-	//else
-	//{
-	//	std::cout << "[" << searchFor << " not found]\n";
-	//}
+	outputFile << "\nSearch tree for " << searchFor;
 
-	std::cout << "\nRemove: ";
-	std::cin >> searchFor;
-
-	if (myTree.Remove(searchFor))
+	if (myTree.Search(searchFor))
 	{
-		std::cout << "[" << searchFor << " removed]";
+		outputFile << "\n[" << searchFor << " found]\n";
 	}
 	else
 	{
-		std::cout << "[" << searchFor << " not removed]\n";
+		outputFile << "\n[" << searchFor << " not found]\n";
 	}
-	myTree.Print(BST::Order::In);
+
+	outputFile << "\nRemove " << remove;
+
+	if (myTree.Remove(remove))
+	{
+		outputFile << "\n[" << remove << " removed]\n";
+	}
+	else
+	{
+		outputFile << "\n[" << remove << " not removed]\n";
+	}
+	myTree.Print(BST::Order::In, outputFile);
+
+	outputFile << "\nFind between 9 and 35\n";
+
+	std::vector<int> range = myTree.FindRange(9, 35);
+	for (int i = 0; i < range.size(); ++i)
+	{
+		outputFile << range.at(i) << " ";
+	}
+	outputFile << std::endl;
+
+	outputFile.close();
 }
