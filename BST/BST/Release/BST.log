@@ -1,6 +1,0 @@
-﻿  Source.cpp
-Source.cpp(55): warning C4018: '<': signed/unsigned mismatch
-  Generating code
-  All 265 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
-  Finished generating code
-  BST.vcxproj -> C:\Users\Jake\Desktop\School\8thQuarter\AlgorithmsII\BST\Release\BST.exe

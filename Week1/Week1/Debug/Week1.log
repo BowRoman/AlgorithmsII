@@ -1,8 +1,0 @@
-﻿  Source.cpp
-  Generating Code...
-d:\jroman\algorithmsii\week1\week1\expressiontree.h(140): warning C4700: uninitialized local variable 'number' used
-  Skipping... (no relevant changes detected)
-  ExpressionTree.cpp
-Source.obj : error LNK2019: unresolved external symbol "public: __thiscall ExpressionTree::Operand<int>::Operand<int>(int)" (??0?$Operand@H@ExpressionTree@@QAE@H@Z) referenced in function "private: void __thiscall ExpressionTree::ExpressionTree<int>::CreateTNode(int)" (?CreateTNode@?$ExpressionTree@H@ExpressionTree@@AAEXH@Z)
-Source.obj : error LNK2019: unresolved external symbol "public: __thiscall ExpressionTree::Operator<int>::Operator<int>(enum ExpressionTree::OperatorType)" (??0?$Operator@H@ExpressionTree@@QAE@W4OperatorType@1@@Z) referenced in function "private: void __thiscall ExpressionTree::ExpressionTree<int>::CreateDNode(char)" (?CreateDNode@?$ExpressionTree@H@ExpressionTree@@AAEXD@Z)
-D:\JRoman\AlgorithmsII\Week1\Debug\Week1.exe : fatal error LNK1120: 2 unresolved externals
