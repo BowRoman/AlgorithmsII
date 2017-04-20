@@ -1,0 +1,7 @@
+﻿  Source.cpp
+Src\Source.cpp(55): warning C4018: '<': signed/unsigned mismatch
+  Generating code
+  All 271 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  Testing.vcxproj -> D:\JRoman\AlgorithmsII\Trees\Release\Testing.exe
+  Testing.vcxproj -> D:\JRoman\AlgorithmsII\Trees\Release\Testing.pdb (Full PDB)
