@@ -244,6 +244,7 @@ inline bool BSTree<T>::Remove(T val)
 					currNode->data_ = closestNode->data_;
 					currNode->right_.reset();
 					closestNode.reset();
+					return true;
 				}
 				// if the right child has no left child, link its right child to the parent's child
 				else if (!closestNode->left_)

@@ -29,7 +29,7 @@ public:
 		spNode right_;
 		Node(T val = T())
 			: data_(val)
-			, height_(0)
+			, height_(1)
 			, right_(nullptr)
 			, left_(nullptr)
 		{}
@@ -61,7 +61,8 @@ private:
 	int8_t GetBalanceFactor(const spNode& node) { return GetHeight(node->right_) - GetHeight(node->left_); }
 
 	spNode InsertHelper(T val, spNode& node);
-	bool SearchHelper(T val, spNode& node, spNode& parent);
+	T RemoveHelper(spNode& node);
+	bool SearchHelper(T val, const spNode& node, const spNode& parent);
 	void CalculateHeight(spNode& node);
 	spNode Balance(spNode& node);
 
@@ -73,7 +74,7 @@ private:
 	void PrintInOrder(std::ostream& os, const spNode currNode = nullptr);
 	void PrintPreOrder(std::ostream& os, const spNode currNode = nullptr);
 	void PrintPostOrder(std::ostream& os, const spNode currNode = nullptr);
-	void PrintPretty(std::ostream& os, const spNode currNode = nullptr);
+	void PrintPretty(std::ostream& os, int indent, const spNode currNode = nullptr);
 
 }; // class AVLTree
 
@@ -112,21 +113,23 @@ typename AVLTree<T>::spNode AVLTree<T>::Remove(T val)
 		// node has 2 children
 		else if (node->left_ && node->right_)
 		{
-			spNode closest = node->right_;
-			spNode closestPar = node;
-
-			while (closest->left_)
+			if (node->right_->left_)
 			{
-				closestPar = closest;
-				closest = closest->left_;
+				node->data_ = RemoveHelper(node->right_);
 			}
-			node->data_ = closest->data_;
-			if (closest->right_)
+			else
 			{
-				closestPar->left_ = closest->right_;
+				node->data_ = node->right_->data_;
+				if (node->right_->right_)
+				{
+					node->right_ = node->right_->right_;
+				}
+				else
+				{
+					node->right_.reset();
+				}
 			}
-			closest.reset();
-			return Balance(closestPar);
+			return Balance(node);
 		}
 		// node has a left child
 		else if(node->left_)
@@ -183,11 +186,13 @@ inline bool AVLTree<T>::Print(Order order, std::ostream & os)
 		break;
 	case Order::Post: PrintPostOrder(os, root_);
 		break;
-	case Order::Pretty: PrintPretty(os, root_);
+	case Order::Pretty: PrintPretty(os, 0, root_);
+		os << "---------------------------------------------------";
 		break;
 	default: return false;
 		break;
 	}
+	os << std::endl;
 	return true;
 } // bool Print(Order order, std::ostream & os)
 
@@ -216,23 +221,56 @@ typename AVLTree<T>::spNode AVLTree<T>::InsertHelper(T val, spNode& node)
 }
 
 template<typename T>
-bool AVLTree<T>::SearchHelper(T val, spNode& node, spNode& parent)
+T AVLTree<T>::RemoveHelper(spNode& node)
 {
-	while(node)
+	T lowest = node->data_;
+	if (node->left_)
 	{
-		if (val == node->data_)
+		if(node->left_->left_)
+			lowest = RemoveHelper(node->left_);
+		else if (node->left_->right_)
 		{
-			return true;
-		}
-		else if (val < node->data_)
-		{
-			parent = node;
-			node = node->left_;
+			lowest = node->left_->data_;
+			spNode toDelete = node->left_;
+			node->left_ = node->left_->right_;
+			toDelete.reset();
 		}
 		else
 		{
-			parent = node;
-			node = node->right_;
+			lowest = node->left_->data_;
+			node->left_.reset();
+		}
+	}
+	/*else if (node->right_)
+	{
+		spNode toDelete = node;
+		node = node->right_;
+		toDelete.reset();
+	}*/
+	Balance(node);
+	return lowest;
+}
+
+template<typename T>
+bool AVLTree<T>::SearchHelper(T val, const spNode& node, const spNode& parent)
+{
+	spNode par = parent;
+	spNode curr = node;
+	while(curr)
+	{
+		if (val == curr->data_)
+		{
+			return true;
+		}
+		else if (val < curr->data_)
+		{
+			par = curr;
+			curr = curr->left_;
+		}
+		else
+		{
+			par = curr;
+			curr = curr->right_;
 		}
 	}
 	return false;
@@ -250,7 +288,8 @@ template<typename T>
 inline typename AVLTree<T>::spNode AVLTree<T>::Balance(spNode & node)
 {
 	CalculateHeight(node);
-	if (GetBalanceFactor(node) == 2)
+	int balanceFactor = GetBalanceFactor(node);
+	if (balanceFactor == 2)
 	{
 		if (GetBalanceFactor(node->right_) < 0)
 		{
@@ -261,7 +300,7 @@ inline typename AVLTree<T>::spNode AVLTree<T>::Balance(spNode & node)
 			return RotateLeft(node);
 		}
 	}
-	else if (GetBalanceFactor(node) == -2)
+	else if (balanceFactor == -2)
 	{
 		if (GetBalanceFactor(node->left_) > 0)
 		{
@@ -357,18 +396,17 @@ void AVLTree<T>::PrintPostOrder(std::ostream & os, const spNode currNode)
 } // PrintPostOrder(std::ostream & os, const spNode currNode)
 
 template<typename T>
-void AVLTree<T>::PrintPretty(std::ostream & os, const spNode currNode)
+void AVLTree<T>::PrintPretty(std::ostream & os, int indent, const spNode currNode)
 {
 	if (!currNode)
 	{
 		return;
 	}
-	PrintPretty(os, currNode->left_);
-	int indent = GetHeight(currNode);
+	PrintPretty(os, indent + 4, currNode->right_);
 	if (indent > 0)
-		os << std::setw(indent*3) << ' ';
+		os << std::setw(indent) << ' ';
 	os << currNode->data_ << std::endl;
-	PrintPretty(os, currNode->right_);
+	PrintPretty(os, indent + 4, currNode->left_);
 } // PrintInOrder(std::ostream & os, const spNode currNode)
 
 

@@ -2,20 +2,20 @@
 #include <AVL\Inc\AVL.h>
 #include <Heap\Inc\Heap.h>
 
-void TestBST();
-void TestAVL();
+void TestBST(std::ostream& outputFile);
+void TestAVL(std::ostream& outputFile);
 void TestHeap();
 
 void main()
 {
-	TestAVL();
-}
-
-void TestBST()
-{
 	std::ofstream outputFile;
 	outputFile.open("Output.txt");
+	TestAVL(outputFile);
+	outputFile.close();
+}
 
+void TestBST(std::ostream& outputFile)
+{
 	BST::BSTree<int> myTree;
 
 	myTree.Insert(23);
@@ -68,46 +68,83 @@ void TestBST()
 		outputFile << range.at(i) << " ";
 	}
 	outputFile << std::endl;
-
-	outputFile.close();
 }
 
-void TestAVL()
+void TestAVL(std::ostream& outputFile)
 {
 	AVL::AVLTree<int> myTree;
 
 	myTree.Insert(23);
-	//myTree.Print(AVL::Order::Pretty);
+	myTree.Print(AVL::Order::Pretty, outputFile);
 	myTree.Insert(12);
-	//myTree.Print(AVL::Order::Pretty);
+	myTree.Print(AVL::Order::Pretty, outputFile);
 	myTree.Insert(34);
-	//myTree.Print(AVL::Order::Pretty);
+	myTree.Print(AVL::Order::Pretty, outputFile);
 	myTree.Insert(8);
-	//myTree.Print(AVL::Order::Pretty);
+	myTree.Print(AVL::Order::Pretty, outputFile);
 	myTree.Insert(76);
-	//myTree.Print(AVL::Order::Pretty);
+	myTree.Print(AVL::Order::Pretty, outputFile);
 	myTree.Insert(10);
-	//myTree.Print(AVL::Order::Pretty);
+	myTree.Print(AVL::Order::Pretty, outputFile);
 	myTree.Insert(11);
-	//myTree.Print(AVL::Order::Pretty);
+	myTree.Print(AVL::Order::Pretty, outputFile);
 	myTree.Insert(41);
-	//myTree.Print(AVL::Order::Pretty);
+	myTree.Print(AVL::Order::Pretty, outputFile);
 	myTree.Insert(30);
-	//myTree.Print(AVL::Order::Pretty);
+	myTree.Print(AVL::Order::Pretty, outputFile);
 	myTree.Insert(6);
-	myTree.Print(AVL::Order::Pretty);
+	myTree.Print(AVL::Order::Pretty, outputFile);
+
+	outputFile << "In Order: ";
+	myTree.Print(AVL::Order::In, outputFile);
 
 	int n = 23;
 	if (myTree.Search(n))
 	{
-		std::cout << n << " found" << std::endl;
+		outputFile << n << " found" << std::endl;
 	}
 	else
 	{
-		std::cout << n << " not found" << std::endl;
+		outputFile << n << " not found" << std::endl;
 	}
-	myTree.Remove(23);
-	myTree.Print(AVL::Order::Pretty);
+	n = 41;
+	if (myTree.Search(n))
+	{
+		outputFile << n << " found" << std::endl;
+	}
+	else
+	{
+		outputFile << n << " not found" << std::endl;
+	}
+	n = 37;
+	if (myTree.Search(n))
+	{
+		outputFile << n << " found" << std::endl;
+	}
+	else
+	{
+		outputFile << n << " not found" << std::endl;
+	}
+	int r = 23;
+	if (myTree.Remove(r) != AVL::AVLTree<int>::spNode())
+	{
+		outputFile << r << " removed" << std::endl;
+	}
+	else
+	{
+		outputFile << r << " not found" << std::endl;
+	}
+	myTree.Print(AVL::Order::Pretty, outputFile);
+	r = 8;
+	if (myTree.Remove(r) != AVL::AVLTree<int>::spNode())
+	{
+		outputFile << r << " removed" << std::endl;
+	}
+	else
+	{
+		outputFile << r << " not found" << std::endl;
+	}
+	myTree.Print(AVL::Order::Pretty, outputFile);
 }
 
 void TestHeap()
