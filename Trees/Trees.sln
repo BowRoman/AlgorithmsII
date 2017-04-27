@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Testing", "Testing\Testing.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AVL", "AVL\AVL.vcxproj", "{BCC6AA0E-4754-4EED-8C48-32E1AB5A5C61}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Heap", "Heap\Heap.vcxproj", "{7F66966F-DCF4-4C50-B4E2-C709014F223E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +43,14 @@ Global
 		{BCC6AA0E-4754-4EED-8C48-32E1AB5A5C61}.Release|x64.Build.0 = Release|x64
 		{BCC6AA0E-4754-4EED-8C48-32E1AB5A5C61}.Release|x86.ActiveCfg = Release|Win32
 		{BCC6AA0E-4754-4EED-8C48-32E1AB5A5C61}.Release|x86.Build.0 = Release|Win32
+		{7F66966F-DCF4-4C50-B4E2-C709014F223E}.Debug|x64.ActiveCfg = Debug|x64
+		{7F66966F-DCF4-4C50-B4E2-C709014F223E}.Debug|x64.Build.0 = Debug|x64
+		{7F66966F-DCF4-4C50-B4E2-C709014F223E}.Debug|x86.ActiveCfg = Debug|Win32
+		{7F66966F-DCF4-4C50-B4E2-C709014F223E}.Debug|x86.Build.0 = Debug|Win32
+		{7F66966F-DCF4-4C50-B4E2-C709014F223E}.Release|x64.ActiveCfg = Release|x64
+		{7F66966F-DCF4-4C50-B4E2-C709014F223E}.Release|x64.Build.0 = Release|x64
+		{7F66966F-DCF4-4C50-B4E2-C709014F223E}.Release|x86.ActiveCfg = Release|Win32
+		{7F66966F-DCF4-4C50-B4E2-C709014F223E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

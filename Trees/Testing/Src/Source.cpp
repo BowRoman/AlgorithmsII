@@ -1,8 +1,10 @@
 #include <BST\Inc\BST.h>
 #include <AVL\Inc\AVL.h>
+#include <Heap\Inc\Heap.h>
 
 void TestBST();
 void TestAVL();
+void TestHeap();
 
 void main()
 {
@@ -94,4 +96,34 @@ void TestAVL()
 	//myTree.Print(AVL::Order::Pretty);
 	myTree.Insert(6);
 	myTree.Print(AVL::Order::Pretty);
+
+	int n = 23;
+	if (myTree.Search(n))
+	{
+		std::cout << n << " found" << std::endl;
+	}
+	else
+	{
+		std::cout << n << " not found" << std::endl;
+	}
+	myTree.Remove(23);
+	myTree.Print(AVL::Order::Pretty);
+}
+
+void TestHeap()
+{
+	Heap::Heap<int> heap(10);
+	heap.Push(23);
+	heap.Push(29);
+	heap.Push(49);
+	heap.Push(-16);
+	heap.Push(64);
+	heap.Push(12);
+	heap.Push(37);
+
+	while (heap.Size() > 0)
+	{
+		std::cout << heap.Pop() << ", ";
+	}
+	std::cout << std::endl;
 }

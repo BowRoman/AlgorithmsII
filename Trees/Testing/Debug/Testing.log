@@ -1,1 +1,4 @@
-﻿
+﻿  Source.cpp
+d:\jroman\algorithmsii\trees\testing\src\source.cpp(66): warning C4018: '<': signed/unsigned mismatch
+  Testing.vcxproj -> D:\JRoman\AlgorithmsII\Trees\Debug\Testing.exe
+  Testing.vcxproj -> D:\JRoman\AlgorithmsII\Trees\Debug\Testing.pdb (Full PDB)

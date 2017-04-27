@@ -1,6 +1,6 @@
 #pragma once
-#ifndef TREES_AVL_BST_H
-#define TREES_AVL_BST_H
+#ifndef TREES_AVL_AVL_H
+#define TREES_AVL_AVL_H
 
 #include "Common.h"
 
@@ -49,8 +49,8 @@ public:
 	uint8_t GetHeight(const spNode& node) { return node ? node->height_ : 0; }
 
 	spNode Insert(T val);
-	// bool Search(T val);
-	// bool Remove(T val);
+	spNode Remove(T val);
+	bool Search(T val);
 
 	bool Print(Order order = Order::In, std::ostream& os = std::cout);
 
@@ -61,6 +61,7 @@ private:
 	int8_t GetBalanceFactor(const spNode& node) { return GetHeight(node->right_) - GetHeight(node->left_); }
 
 	spNode InsertHelper(T val, spNode& node);
+	bool SearchHelper(T val, spNode& node, spNode& parent);
 	void CalculateHeight(spNode& node);
 	spNode Balance(spNode& node);
 
@@ -72,7 +73,7 @@ private:
 	void PrintInOrder(std::ostream& os, const spNode currNode = nullptr);
 	void PrintPreOrder(std::ostream& os, const spNode currNode = nullptr);
 	void PrintPostOrder(std::ostream& os, const spNode currNode = nullptr);
-	void PrintPretty(std::ostream& os, int8_t indent, const spNode currNode = nullptr);
+	void PrintPretty(std::ostream& os, const spNode currNode = nullptr);
 
 }; // class AVLTree
 
@@ -80,6 +81,95 @@ template<typename T>
 inline typename AVLTree<T>::spNode AVLTree<T>::Insert(T val)
 {
 	return InsertHelper(val, root_);
+}
+
+template<typename T>
+typename AVLTree<T>::spNode AVLTree<T>::Remove(T val)
+{
+	spNode node = root_;
+	spNode parent = root_;
+	bool found = SearchHelper(val, node, parent);
+	if (found)
+	{
+		// node has no children
+		if(!node->left_ && !node->right_)
+		{
+			// node is not the root
+			if (node != root_)
+			{
+				if (parent->left_ == node)
+				{
+					parent->left_.reset();
+				}
+				if (parent->right_ == node)
+				{
+					parent->right_.reset();
+				}
+			}
+			node.reset();
+			return Balance(parent);
+		}
+		// node has 2 children
+		else if (node->left_ && node->right_)
+		{
+			spNode closest = node->right_;
+			spNode closestPar = node;
+
+			while (closest->left_)
+			{
+				closestPar = closest;
+				closest = closest->left_;
+			}
+			node->data_ = closest->data_;
+			if (closest->right_)
+			{
+				closestPar->left_ = closest->right_;
+			}
+			closest.reset();
+			return Balance(closestPar);
+		}
+		// node has a left child
+		else if(node->left_)
+		{
+			if (node != root_)
+			{
+				if (parent->left_ == node)
+				{
+					parent->left_ = node->left_;
+				}
+				if (parent->right_ == node)
+				{
+					parent->right_ = node->left_;
+				}
+			}
+			node.reset();
+			return Balance(parent);
+		}
+		// node has a right child
+		else
+		{
+			if (node != root_)
+			{
+				if (parent->left_ == node)
+				{
+					parent->left_ = node->right_;
+				}
+				if (parent->right_ == node)
+				{
+					parent->right_ = node->right_;
+				}
+			}
+			node.reset();
+			return Balance(parent);
+		}
+	}
+	return spNode();
+}
+
+template<typename T>
+inline bool AVLTree<T>::Search(T val)
+{
+	return SearchHelper(val, root_, root_);
 }
 
 template<typename T>
@@ -93,7 +183,7 @@ inline bool AVLTree<T>::Print(Order order, std::ostream & os)
 		break;
 	case Order::Post: PrintPostOrder(os, root_);
 		break;
-	case Order::Pretty: PrintPretty(os, 0, root_);
+	case Order::Pretty: PrintPretty(os, root_);
 		break;
 	default: return false;
 		break;
@@ -123,6 +213,29 @@ typename AVLTree<T>::spNode AVLTree<T>::InsertHelper(T val, spNode& node)
 	}
 
 	return Balance(node);
+}
+
+template<typename T>
+bool AVLTree<T>::SearchHelper(T val, spNode& node, spNode& parent)
+{
+	while(node)
+	{
+		if (val == node->data_)
+		{
+			return true;
+		}
+		else if (val < node->data_)
+		{
+			parent = node;
+			node = node->left_;
+		}
+		else
+		{
+			parent = node;
+			node = node->right_;
+		}
+	}
+	return false;
 }
 
 template<typename T>
@@ -244,21 +357,21 @@ void AVLTree<T>::PrintPostOrder(std::ostream & os, const spNode currNode)
 } // PrintPostOrder(std::ostream & os, const spNode currNode)
 
 template<typename T>
-void AVLTree<T>::PrintPretty(std::ostream & os, int8_t indent, const spNode currNode)
+void AVLTree<T>::PrintPretty(std::ostream & os, const spNode currNode)
 {
-	if (currNode)
+	if (!currNode)
 	{
-		if (currNode->left_) PrintPretty(os, indent + 4, currNode->left_);
-		if (currNode->right_) PrintPretty(os, indent + 4, currNode->right_);
-		if (indent)
-		{
-			std::cout << std::setw(indent) << ' ';
-		}
-		os << currNode->data_ << "\n ";
+		return;
 	}
+	PrintPretty(os, currNode->left_);
+	int indent = GetHeight(currNode);
+	if (indent > 0)
+		os << std::setw(indent*3) << ' ';
+	os << currNode->data_ << std::endl;
+	PrintPretty(os, currNode->right_);
 } // PrintInOrder(std::ostream & os, const spNode currNode)
 
 
 } // namespace AVL
 
-#endif // #ifndef TREES_AVL_BST_H 
+#endif // #ifndef TREES_AVL_AVL_H 
