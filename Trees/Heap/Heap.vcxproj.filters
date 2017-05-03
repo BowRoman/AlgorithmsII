@@ -11,4 +11,7 @@
     <ClInclude Include="Inc\Common.h" />
     <ClInclude Include="Inc\Heap.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Core\Core.vcxproj" />
+  </ItemGroup>
 </Project>

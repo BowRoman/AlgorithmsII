@@ -6,13 +6,14 @@ void TestBST(std::ostream& outputFile);
 void TestAVL(std::ostream& outputFile);
 void TestHeap();
 
-void main()
-{
-	std::ofstream outputFile;
-	outputFile.open("Output.txt");
-	TestAVL(outputFile);
-	outputFile.close();
-}
+//void main()
+//{
+//	std::ofstream outputFile;
+//	outputFile.open("Output.txt");
+//	TestAVL(outputFile);
+//	outputFile.close();
+//
+//}
 
 void TestBST(std::ostream& outputFile)
 {
@@ -164,3 +165,4 @@ void TestHeap()
 	}
 	std::cout << std::endl;
 }
+

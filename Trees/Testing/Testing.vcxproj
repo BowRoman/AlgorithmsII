@@ -153,8 +153,12 @@
     <ProjectReference Include="..\Heap\Heap.vcxproj">
       <Project>{7f66966f-dcf4-4c50-b4e2-c709014f223e}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\Math\Math.vcxproj">
+      <Project>{b4537184-e7d8-465e-90d1-27da72203376}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Assignment4.cpp" />
     <ClCompile Include="Src\Source.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

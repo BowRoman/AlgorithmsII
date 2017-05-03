@@ -140,6 +140,9 @@
     <ClInclude Include="Inc\Heap.h" />
     <ClInclude Include="Src\Precompiled.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Core\Core.vcxproj" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
