@@ -3,6 +3,7 @@
 #include <Windows.h> // Sleep
 #include <iostream> // std::cout
 #include <functional> // std::greater
+#include <conio.h>
 
 #include <Heap\Inc\Heap.h>
 #include <Math\Inc\Vector3.h>
@@ -11,9 +12,12 @@
 namespace
 {
 struct Player;
+
 float Dist(const Player& player, const Math::Vector3& enemy);
 float KillValue(const Player& player, const Math::Vector3& enemy);
+
 const Math::Vector3 enemyLoc(500.0f, 500.0f, 500.0f);
+
 enum Type
 {
 	Solder = 0,
@@ -32,19 +36,23 @@ struct Player
 		type = t;
 		killVal = 0;
 		srand(seed);
-		pos.x = rand() % 1000;
-		pos.y = rand() % 1000;
-		pos.z = rand() % 1000;
+		pos.x = (float)(rand() % 1000);
+		pos.y = (float)(rand() % 1000);
+		pos.z = (float)(rand() % 1000);
 		vel.x = (enemyLoc.x - pos.x);
 		vel.y = (enemyLoc.y - pos.y);
 		vel.z = (enemyLoc.z - pos.z);
-		vel = vel.Normal()*t;
-	}
+		vel = vel.Normal();
+		if (type == Type::Sergeant)
+			vel *= 0.5f;
+		else if (type == Type::Commander)
+			vel *= 0.1f;
+	} // Instantiate()
 	void Update(float dt)
 	{
 		pos += vel*dt;
 		killVal = KillValue(*this, enemyLoc);
-	}
+	} // Update()
 
 	friend bool operator==(const Player& L, const Player& R)
 	{
@@ -55,11 +63,11 @@ struct Player
 		if (L.type != R.type)
 			return false;
 		return true;
-	}
+	} // operator==
 	friend bool operator!=(const Player& L, const Player& R) { return !(L == R); }
 	friend bool operator<(const Player& L, const Player& R) { return L.killVal < R.killVal; }
 	friend bool operator>(const Player& L, const Player& R) { return !(L < R); }
-};
+}; // Player
 
 float Dist(const Player& player, const Math::Vector3& enemy)
 {
@@ -75,44 +83,44 @@ float Dist(const Player& player, const Math::Vector3& enemy)
 
 float KillValue(const Player& player, const Math::Vector3& enemy)
 {
-	return (Dist(player, enemy) + (10 * player.type)); // type == 0 for solder, 2 for Sergeant, and 10 for Commander. 
-}
+	return 1/(Dist(player, enemy) + (10 * player.type)); // type == 0 for solder, 2 for Sergeant, and 10 for Commander. 
+} // KillValue()
 
-}
+} // namespace
 
 void main()
 {
 	std::vector<Player> players;
-	int numPlayers = 1000;
-	int numSerg = 100;
-	int numCom = 10;
+	int numPlayers = 10000;
+	int numSerg = 1000;
+	int numCom = 100;
 	players.reserve(numPlayers);
 
 	Player p;
-	while (players.size() < numCom && players.size() < numPlayers)
+	while ((int)players.size() < numCom && (int)players.size() < numPlayers)
 	{
 		p.Instantiate(Type::Commander, time(NULL)+players.size());
 		players.push_back(p);
-		Sleep(10);
+		Sleep(1);
 	}
-	while (players.size() < numCom+numSerg && players.size() < numPlayers)
+	while ((int)players.size() < numCom+numSerg && (int)players.size() < numPlayers)
 	{
 		p.Instantiate(Type::Sergeant, time(NULL) + players.size());
 		players.push_back(p);
-		Sleep(10);
+		Sleep(1);
 	}
-	while (players.size() < numPlayers)
+	while ((int)players.size() < numPlayers)
 	{
 		p.Instantiate(Type::Solder, time(NULL) + players.size());
 		players.push_back(p);
-		Sleep(10);
+		Sleep(1);
 	}
 
-	float dt = 0.03;
+	float dt = 0.03f;
 	while (numPlayers > 0)
 	{
-		Heap::Heap<Player,std::greater<Player>> heap;
-		for (int i = 0; i < players.size(); ++i)
+		Heap::Heap<Player/*,std::greater<Player>*/> heap;
+		for (int i = 0; i < (int)players.size(); ++i)
 		{
 			players[i].Update(dt); // update players' position: player.pos += player.vel * dt;
 			heap.Push(players[i]); // sort them based on their killValue using heap sort.
@@ -126,7 +134,7 @@ void main()
 		}
 		players.erase(players.begin() + i);
 		--numPlayers;
-		Sleep(30); // sleep for 30 ms.
+		//Sleep(30); // sleep for 30 ms.
 	}
-}
+} // main()
 
