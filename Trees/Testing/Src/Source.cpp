@@ -1,19 +1,21 @@
 #include <BST\Inc\BST.h>
 #include <AVL\Inc\AVL.h>
 #include <Heap\Inc\Heap.h>
+#include <QuickSort\Inc\QuickSort.h>
 
 void TestBST(std::ostream& outputFile);
 void TestAVL(std::ostream& outputFile);
 void TestHeap();
+void TestQuickSort();
 
-//void main()
-//{
-//	std::ofstream outputFile;
-//	outputFile.open("Output.txt");
-//	TestAVL(outputFile);
-//	outputFile.close();
-//
-//}
+void main()
+{
+	//std::ofstream outputFile;
+	//outputFile.open("Output.txt");
+	//TestAVL(outputFile);
+	//outputFile.close();
+	TestQuickSort();
+}
 
 void TestBST(std::ostream& outputFile)
 {
@@ -166,3 +168,18 @@ void TestHeap()
 	std::cout << std::endl;
 }
 
+void TestQuickSort()
+{
+	//std::vector<int> testVec = { 32, 56, 12, 0, 32, 85, 35, 96, -69, 12, 96, 34, 83, 17, 22, 47 };
+	std::vector<int> testVec = { 32, 56, 12, 0 };
+	QuickSort<int> mySort(testVec);
+
+	std::cout << testVec.at(0);
+
+	for (int i = 1; i < (int)testVec.size(); ++i)
+	{
+		std::cout << ", " << testVec.at(i);
+	}
+
+	std::cout << std::endl;
+}
