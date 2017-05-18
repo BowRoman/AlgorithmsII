@@ -6,5 +6,9 @@
   <ItemGroup>
     <ClInclude Include="Inc\QuickSort.h" />
     <ClInclude Include="Inc\Common.h" />
+    <ClInclude Include="Src\Precompiled.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Src\Precompiled.cpp" />
   </ItemGroup>
 </Project>

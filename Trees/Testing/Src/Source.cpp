@@ -170,8 +170,8 @@ void TestHeap()
 
 void TestQuickSort()
 {
-	//std::vector<int> testVec = { 32, 56, 12, 0, 32, 85, 35, 96, -69, 12, 96, 34, 83, 17, 22, 47 };
-	std::vector<int> testVec = { 32, 56, 12, 0 };
+	std::vector<int> testVec = { 32, 56, 12, 0, 32, 85, 35, 96, -69, 12, 96, 34, 83, 17, 22, 47 };
+	//std::vector<int> testVec = { 32, 56, 12, 0 };
 	QuickSort<int> mySort(testVec);
 
 	std::cout << testVec.at(0);

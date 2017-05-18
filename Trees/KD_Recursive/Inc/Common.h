@@ -1,0 +1,6 @@
+#ifndef TREES_KDRECURSIVE_COMMON_H
+#define TREES_KDRECURSIVE_COMMON_H
+
+#include <vector>
+
+#endif // #ifndef TREES_KDRECURSIVE_COMMON_H
