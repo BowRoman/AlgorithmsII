@@ -1,3 +1,4 @@
+#pragma once
 #ifndef ALGORITHMS_QUICKSORT_QUICKSORT_H
 #define ALGORITHMS_QUICKSORT_QUICKSORT_H
 
@@ -15,10 +16,11 @@ private:
 	void SwapElements(int index1, int index2);
 	void Sort();
 	void QSort(int lVal, int rVal);
-	int Partition(int lIndex, int rIndex, int pivotIndex);
+	int Partition(const int begin, const int end);
 
 private:
 	std::vector<T> &mVector;
+	CMP mComp;
 };
 
 template<typename T, typename CMP>
@@ -60,45 +62,32 @@ void QuickSort<T,CMP>::QSort(int lIndex, int rIndex)
 	{
 		return;
 	}
-	int pivotIndex = Partition(lIndex, rIndex, lIndex);
+	int pivotIndex = Partition(lIndex, rIndex);
 	QSort(lIndex, pivotIndex - 1);
 	QSort(pivotIndex + 1, rIndex);
 }
 
 template<typename T, typename CMP>
-int QuickSort<T,CMP>::Partition(int lIndex, int rIndex, int pivotIndex)
+int QuickSort<T,CMP>::Partition(const int begin, const int end)
 {
-	CMP compare;
-
-	if (pivotIndex != rIndex)
+	int pivot = mVector[end];
+	int Index = begin;
+	for (int iter = begin; iter < end; iter++)
 	{
-		SwapElements(pivotIndex, rIndex);
-	}
-
-	int currLeft = lIndex;
-	int currRight = rIndex-1;
-	T pivot = mVector.at(rIndex);
-
-	while(1)
-	{
-		while(currLeft < rIndex && compare(mVector.at(currLeft), pivot))
+		if (mVector[iter] <= pivot)
 		{
-			++currLeft;
-		}
-		while(currRight > lIndex && !compare(mVector.at(currRight), pivot))
-		{
-			--currRight;
-		}
-		if(currLeft >= currRight)
-		{
-			break;
-		}
-		if (rIndex != currLeft)
-		{
-			SwapElements(currLeft, currRight);
+			if (Index != iter)
+			{
+				SwapElements(iter, Index);
+			}
+			Index++;
 		}
 	}
-	return currLeft;
+	if (Index != end)
+	{
+		SwapElements(end, Index);
+	}
+	return Index;
 }
 
 #endif // #ifndef ALGORITHMS_QUICKSORT_QUICKSORT_H
