@@ -147,14 +147,23 @@
     <ProjectReference Include="..\AVL\AVL.vcxproj">
       <Project>{bcc6aa0e-4754-4eed-8c48-32e1ab5a5c61}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\BeeTree\BeeTree.vcxproj">
+      <Project>{3e833deb-7384-4a39-89f3-c634a7938af3}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\BST\BST.vcxproj">
       <Project>{f36bbc08-bf49-4d3f-948e-a54d5502f66c}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Heap\Heap.vcxproj">
       <Project>{7f66966f-dcf4-4c50-b4e2-c709014f223e}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\KD_Recursive\KD_Recursive.vcxproj">
+      <Project>{83378a05-aaca-4d5b-a058-565081a22c54}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Math\Math.vcxproj">
       <Project>{b4537184-e7d8-465e-90d1-27da72203376}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\QuickSort\QuickSort.vcxproj">
+      <Project>{4f5e1b2f-d6b8-49cf-9218-b4a89d02456f}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

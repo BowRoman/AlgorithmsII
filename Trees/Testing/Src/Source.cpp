@@ -2,11 +2,13 @@
 #include <AVL\Inc\AVL.h>
 #include <Heap\Inc\Heap.h>
 #include <QuickSort\Inc\QuickSort.h>
+#include <BeeTree\Inc\BeeTree.h>
 
 void TestBST(std::ostream& outputFile);
 void TestAVL(std::ostream& outputFile);
 void TestHeap();
 void TestQuickSort();
+void TestBeeTree();
 
 void main()
 {
@@ -14,7 +16,8 @@ void main()
 	//outputFile.open("Output.txt");
 	//TestAVL(outputFile);
 	//outputFile.close();
-	TestQuickSort();
+	//TestQuickSort();
+	TestBeeTree();
 }
 
 void TestBST(std::ostream& outputFile)
@@ -66,7 +69,7 @@ void TestBST(std::ostream& outputFile)
 	outputFile << "\nFind between 9 and 35\n";
 
 	std::vector<int> range = myTree.FindRange(9, 35);
-	for (int i = 0; i < range.size(); ++i)
+	for (int i = 0; i < (int)range.size(); ++i)
 	{
 		outputFile << range.at(i) << " ";
 	}
@@ -182,4 +185,18 @@ void TestQuickSort()
 	}
 
 	std::cout << std::endl;
+}
+
+void TestBeeTree()
+{
+	BeeTree::BeeTree tree(3);
+	tree.Insert(10);
+	tree.Insert(14);
+	tree.Insert(-10);
+	tree.Insert(6);
+	tree.Insert(9);
+	tree.Insert(25);
+	tree.Insert(41);
+	tree.Insert(-4);
+	tree.Insert(22);
 }
