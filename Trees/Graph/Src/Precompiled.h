@@ -1,0 +1,6 @@
+#ifndef TREES_GRAPH_PRECOMPILED_H
+#define TREES_GRAPH_PRECOMPILED_H
+
+#include "Common.h"
+
+#endif // #ifndef TREES_GRAPH_PRECOMPILED_H
