@@ -11,12 +11,12 @@
 namespace BeeTree
 {
 
-template<typename T>
+// template<typename T>
 struct BTHive
 {
-	typename typedef std::shared_ptr<BTHive> hive_t;
-	std::vector<T> bees; // TODO: change to std::vector<t> (keep sorted)
-	std::vector<hive_t> larva; // TODO: change to std::vector<hive_t>
+	// typename typedef std::shared_ptr<BTHive> hive_t;
+	int *bees; // TODO: change to std::vector<t> (keep sorted)
+	BTHive **larva; // TODO: change to std::vector<hive_t>
 	int numOfLarva; // TODO: get from larva.size()
 	const int minDeg;
 	bool isComb;
@@ -25,8 +25,8 @@ struct BTHive
 		: minDeg(deg)
 		, isComb(comb)
 	{
-		bees.reserve(2 * minDeg - 1);
-		larva.reserve(2 * minDeg);
+		bees = new int[2 * minDeg - 1];
+		larva = new BTHive*[2 * minDeg];
 		numOfLarva = 0;
 	}
 	
