@@ -1,5 +1,4 @@
 #pragma once
-#include "Common.h"
 /*
 	key = bee
 	child = larva
@@ -15,159 +14,108 @@ namespace BeeTree
 struct BTHive
 {
 	// typename typedef std::shared_ptr<BTHive> hive_t;
-	int *bees; // TODO: change to std::vector<t> (keep sorted)
-	BTHive **larva; // TODO: change to std::vector<hive_t>
-	int numOfLarva; // TODO: get from larva.size()
-	const int minDeg;
-	bool isComb;
+	int *mBees; // TODO: change to std::vector<t> (keep sorted)
+	BTHive **mLarva; // TODO: change to std::vector<hive_t>
+	int mNumOfLarva; // TODO: get from larva.size()
+	const int mMinDeg;
+	bool bIsComb;
 
-	BTHive(int deg, bool comb)
-		: minDeg(deg)
-		, isComb(comb)
-	{
-		bees = new int[2 * minDeg - 1];
-		larva = new BTHive*[2 * minDeg];
-		numOfLarva = 0;
-	}
+	BTHive(int deg, bool comb);
 	
 	// insert new bee into the subtree assuming the hive is not full
-	void InsertNonFull(int bee)
-	{
-		int i = numOfLarva - 1;
-		if (isComb)
-		{
-			// find locationg of new bee to insert
-			// shift all bees from the location to the right
-			while (i >= 0 && bees[i] > bee)
-			{
-				bees[i + 1] = bees[i];
-				--i;
-			}
-			bees[i + 1] = bee;
-			++numOfLarva;
-		}
-		else // find which larva should insert the new bee
-		{
-			while (i >= 0 && bees[i] > bee)
-			{
-				--i;
-			}
-			++i;
-			// check if the larva is full, if so split it
-			if (larva[i]->numOfLarva >= (2 * minDeg - 1))
-			{
-				SplitLarva(i, larva[i]);
-				if (bees[i] < bee)
-				{
-					++i;
-				}
-			}
-			larva[i]->InsertNonFull(bee);
-		}
-	}
-	void Traverse() // TODO: inorder traversal
-	{
-
-	}
-	void SplitLarva(int i, BTHive *y)
-	{
-		BTHive *bzz = new BTHive(y->minDeg, y->isComb);
-		bzz->numOfLarva = minDeg - 1;
-
-		// copy last minDeg - 1 from y to bzz
-		for (int j = 0; j < minDeg - 1; ++j) // TODO: use std::copy or std::partition
-		{
-			bzz->bees[j] = y->bees[j + minDeg];
-		}
-		if (!y->isComb)
-		{
-			for (int j = 0; j < minDeg; ++j)
-			{
-				bzz->larva[j] = y->larva[j + minDeg];
-			}
-		}
-		// update y's bee number
-		y->numOfLarva = minDeg - 1;
-
-		// make space for new larva
-		for (int j = numOfLarva; j > i + 1; --j)
-		{
-			larva[j + 1] = larva[j];
-		}
-		// link new larva
-		larva[i + 1] = bzz;
-
-		// shift keys from index 1+ forward to make room for the middle bee
-		for (int j = numOfLarva - 1; j >= i; --j)
-		{
-			bees[j + 1] = bees[j];
-		}
-		// copy middle bee of y to this location
-		bees[i] = y->bees[minDeg - 1];
-		++numOfLarva;
-	}
+	void InsertNonFull(int bee);
+	void Traverse();
+	void SplitLarva(int i, BTHive *y);
+	void Erase(int bee);
+	void EraseFromComb(int idx);
+	void EraseFromNonComb(int idx);
+	int FindIndexOfBee(int bee);
+	void Fill(int idx);
+	int GetPredecessor(int idx);
+	int GetSuccessor(int idx);
+	void BorrowFromPrev(int idx);
+	void BorrowFromNext(int idx);
+	void Merge(int idx);
 	// returns the hive which contains the given bee, if it exists
-	BTHive* Query(int bee); // TODO: hive_t Query(T k)
+	BTHive* Query(int bee);
 };
 
 class BeeTree
 {
-	BTHive *queen; // change to hive_t queen;
-	const int minDeg;
+	BTHive *mQueen; // change to hive_t mQueen;
+	const int mMinDeg;
 
 public:
 	BeeTree(int deg)
-		: minDeg(deg)
-		, queen(nullptr)
+		: mMinDeg(deg)
+		, mQueen(nullptr)
 	{}
 
 	void Insert(int bee); // TODO: void Insert(T k)
 	void Erase(int bee); // TODO: void Erase(T k)
-	void Traverse()			{ if(queen) queen->Traverse(); }
+	void Traverse()			{ if(mQueen) mQueen->Traverse(); }
 
-	BTHive* Query(int bee) // TODO: hive_t Query(T k)
-	{
-		if (queen)
-		{
-			return queen->Query(bee);
-		}
-		return nullptr;
-	}
+	BTHive* Query(int bee);
 };
 
 inline void BeeTree::Insert(int bee)
 {
-	if (!queen)
+	if (!mQueen)
 	{
-		queen = new BTHive(minDeg, true);
-		queen->bees[0] = bee;
-		queen->numOfLarva = 1;
+		mQueen = new BTHive(mMinDeg, true);
+		mQueen->mBees[0] = bee;
+		mQueen->mNumOfLarva = 1;
 		return;
 	}
-	if (queen->numOfLarva < (2 * minDeg - 1))
+	if (mQueen->mNumOfLarva < (2 * mMinDeg - 1))
 	{
-		queen->InsertNonFull(bee);
+		mQueen->InsertNonFull(bee);
 	}
 	else // queen is full
 	{
-		BTHive *newQueen = new BTHive(minDeg, false);
-		newQueen->larva[0] = queen; // current queen is now the first larva of the new queen
-		newQueen->SplitLarva(0, queen);
+		BTHive *newQueen = new BTHive(mMinDeg, false);
+		newQueen->mLarva[0] = mQueen; // current queen is now the first larva of the new queen
+		newQueen->SplitLarva(0, mQueen);
 
 		// insert new bee into proper subtree
 		int i = 0;
-		if (newQueen->bees[0] < bee)
+		if (newQueen->mBees[0] < bee)
 		{
 			++i;
 		}
-		newQueen->larva[i]->InsertNonFull(bee);
-		queen = newQueen;
+		newQueen->mLarva[i]->InsertNonFull(bee);
+		mQueen = newQueen;
 	}
 }
 
 void BeeTree::Erase(int bee)
 {
+	if (!mQueen)
+	{
+		std::cout << "The tree is empty\n";
+		return;
+	}
 
+	// Call the remove function for root
+	mQueen->Erase(bee);
+
+	// If the root node has 0 keys, make its first child as the new root
+	if (mQueen->mNumOfLarva == 0)
+	{
+		BTHive *tmp = mQueen;
+		if (mQueen->bIsComb)
+		{
+			mQueen = nullptr;
+		}
+		else
+		{
+			mQueen = mQueen->mLarva[0];
+		}
+
+		// Free the old root
+		delete tmp;
+	}
+	return;
 }
 
 } // namespace BeeTree

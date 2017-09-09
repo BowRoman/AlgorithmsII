@@ -10,5 +10,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Precompiled.cpp" />
+    <ClCompile Include="Src\BeeTree.cpp" />
   </ItemGroup>
 </Project>
